@@ -14,8 +14,8 @@ Requires PHP: 5.4
 namespace LittleBizzy\AnonymousbbPress;
 
 /**
-* Init.
-*/
+ * Init.
+ */
 add_action( 'init', function(){
 
 	add_filter( 'bbp_current_user_can_access_anonymous_user_form', '__return_false' );
