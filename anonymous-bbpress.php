@@ -389,3 +389,4 @@ class Empty_Anonymous_Replies {
 }
 
 // Ref: https://www.ssa.gov/oact/babynames/decades/century.html
+// Ref: https://wordpress.stackexchange.com/questions/131550/how-do-i-set-up-real-anonymous-posting-in-bbpress-forums
