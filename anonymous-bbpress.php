@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Anonymous bbPress
-Plugin URI: https://www.littlebizzy.com/plugins/speed-demon
+Plugin URI: https://www.littlebizzy.com/plugins/anonymous-bbpress
 Description: Enables guest users to participate in bbPress forums without providing an email address or URL, and assigns random usernames to every single post.
 Version: 1.0.0
 Author: LittleBizzy
