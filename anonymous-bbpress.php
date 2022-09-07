@@ -1,24 +1,21 @@
-<?php 
-/**
- * Plugin Name:  Anonymize bbPress
- * Description:  bbPress anonymous modifications.
- * Version:      0.0.2
- * Requires PHP: 5.4
- */
+<?php
+/*
+Plugin Name: Anonymous bbPress
+Plugin URI: https://www.littlebizzy.com/plugins/speed-demon
+Description: Enables guest users to participate in bbPress forums without providing an email address or URL, and assigns random usernames to every single post.
+Version: 1.0.0
+Author: LittleBizzy
+Author URI: https://www.littlebizzy.com
+License: GPLv3
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
+Requires PHP: 5.4
+*/
+
+namespace LittleBizzy\AnonymousbbPress;
 
 /**
- * Changelog.
- *
- * 0.0.2 Fixed formatting. 
- *       Added changelog.
- * 0.0.1 Init.
- */
-
-namespace BBPMods\Anonymous;
-
-/**
- * Init.
- */
+* Init.
+*/
 add_action( 'init', function(){
 
 	add_filter( 'bbp_current_user_can_access_anonymous_user_form', '__return_false' );
