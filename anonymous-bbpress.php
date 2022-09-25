@@ -2,8 +2,10 @@
 /*
 Plugin Name: Anonymous bbPress
 Plugin URI: https://www.littlebizzy.com/plugins/anonymous-bbpress
+GitHub Plugin URI: littlebizzy/anonymous-bbpress
+Release Asset: true
 Description: Enables guest users to participate in bbPress forums without providing an email address or URL, and assigns random usernames to every single post.
-Version: 1.0.0
+Version: 1.0.1
 Author: LittleBizzy
 Author URI: https://www.littlebizzy.com
 License: GPLv3
@@ -390,3 +392,4 @@ class Empty_Anonymous_Replies {
 
 // Ref: https://www.ssa.gov/oact/babynames/decades/century.html
 // Ref: https://wordpress.stackexchange.com/questions/131550/how-do-i-set-up-real-anonymous-posting-in-bbpress-forums
+// Ref: https://git-updater.com/knowledge-base/required-headers/
