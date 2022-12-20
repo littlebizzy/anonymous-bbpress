@@ -2,18 +2,31 @@
 /*
 Plugin Name: Anonymous bbPress
 Plugin URI: https://www.littlebizzy.com/plugins/anonymous-bbpress
-GitHub Plugin URI: littlebizzy/anonymous-bbpress
-Release Asset: true
-Description: Enables guest users to participate in bbPress forums without providing an email address or URL, and assigns random usernames to every single post.
-Version: 1.0.1
+Description: Anonymous bbPress guest posting
+Version: 1.0.2
 Author: LittleBizzy
 Author URI: https://www.littlebizzy.com
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
+GitHub Plugin URI: littlebizzy/anonymous-bbpress
+Primary Branch: main
 Requires PHP: 5.4
 */
 
 namespace LittleBizzy\AnonymousbbPress;
+
+
+// disable wordpress.org updates
+add_filter(
+	'gu_override_dot_org',
+	function ( $overrides ) {
+		return array_merge(
+			$overrides,
+			array( 'anonymous-bbpress/anonymous-bbpress.php' )
+		);
+	}
+);
+
 
 /**
  * Init.
