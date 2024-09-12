@@ -4,6 +4,13 @@ Anonymous bbPress guest posting
 
 ## Changelog
 
+### 1.1.0
+- removed namespaces
+- simpler functions approach (no more classes)
+- minor other improvements
+- supports PHP 7.0 to PHP 8.3
+- supports Multisite
+
 ### 1.0.3
 - added sanitize to inputs
 - minor code cleanup
