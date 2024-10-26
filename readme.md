@@ -4,6 +4,11 @@ Anonymous bbPress guest posting
 
 ## Changelog
 
+### 1.1.1
+- tweaked plugin headers order
+- improved `gu_override_dot_org` snippet
+- added "prevent direct access" snippet for better security
+
 ### 1.1.0
 - removed namespaces
 - simpler functions approach (no more classes)
