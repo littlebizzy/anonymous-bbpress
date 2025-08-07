@@ -10,7 +10,7 @@ Author URI: https://www.littlebizzy.com
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 GitHub Plugin URI: littlebizzy/anonymous-bbpress
-Primary Branch: main
+Primary Branch: master
 */
 
 // prevent direct access
