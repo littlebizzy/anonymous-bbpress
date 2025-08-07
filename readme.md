@@ -4,6 +4,13 @@ Anonymous bbPress guest posting
 
 ## Changelog
 
+### 1.2.0
+- moved user array to file scope to avoid redeclaring on every request
+- added global index to track selected identity across filters
+- removed redundant global passing in init functions
+- ensured global variables are only declared where used
+- cleaned up code spacing and improved comments
+
 ### 1.1.1
 - tweaked plugin headers order
 - improved `gu_override_dot_org` snippet
