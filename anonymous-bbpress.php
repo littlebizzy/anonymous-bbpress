@@ -239,99 +239,49 @@ function anonymous_bbpress_init() {
 	anonymous_bbpress_initialize_posting( $anonymous_users );
 }
 
-/**
- * Set up anonymous posting.
- *
- * @param array $anonymous_users Anonymous users array.
- */
-function anonymous_bbpress_initialize_posting($anonymous_users) {
-    global $anonymous_bbpress_users;
-    $anonymous_bbpress_users = $anonymous_users;
+// initialize anonymous posting
+function anonymous_bbpress_initialize_posting( $anonymous_users ) {
+	global $anonymous_bbpress_users;
+	$anonymous_bbpress_users = $anonymous_users;
 
-    add_filter('bbp_before_filter_anonymous_post_data_parse_args', 'anonymous_bbpress_select_random_user', 10);
-    add_filter('bbp_pre_anonymous_post_author_name', 'anonymous_bbpress_set_random_name');
-    add_filter('bbp_pre_anonymous_post_author_email', 'anonymous_bbpress_set_random_email');
-    add_filter('bbp_filter_anonymous_post_data', 'anonymous_bbpress_filter_anonymous_post_data', 11, 2);
+	// inject name/email early
+	add_filter( 'bbp_before_filter_anonymous_post_data_parse_args', 'anonymous_bbpress_set_random_identity', 5 );
+
+	// run flood protection
+	add_filter( 'bbp_filter_anonymous_post_data', 'anonymous_bbpress_filter_anonymous_post_data', 11, 2 );
 }
 
-/**
- * Select a random user for the post.
- *
- * @param array $r Post data.
- * @return array Modified data.
- */
-function anonymous_bbpress_select_random_user($r) {
-    global $anonymous_bbpress_users, $anonymous_bbpress_user_index;
+// inject random name/email into post data
+function anonymous_bbpress_set_random_identity( $r ) {
+	global $anonymous_bbpress_users, $anonymous_bbpress_user_index;
 
-    if (!empty($anonymous_bbpress_users)) {
-        $anonymous_bbpress_user_index = array_rand($anonymous_bbpress_users);
-    }
+	if ( ! empty( $anonymous_bbpress_users ) ) {
+		$anonymous_bbpress_user_index = array_rand( $anonymous_bbpress_users );
+		$r['bbp_anonymous_name']  = sanitize_text_field( $anonymous_bbpress_users[ $anonymous_bbpress_user_index ][0] );
+		$r['bbp_anonymous_email'] = sanitize_email( $anonymous_bbpress_users[ $anonymous_bbpress_user_index ][1] );
+	}
 
-    return $r;
+	return $r;
 }
 
-/**
- * Set a random anonymous name if none provided.
- *
- * @param string $name Anonymous user name.
- * @return string Name.
- */
-function anonymous_bbpress_set_random_name($name) {
-    global $anonymous_bbpress_users, $anonymous_bbpress_user_index;
+// prevent duplicate post by same identity
+function anonymous_bbpress_filter_anonymous_post_data( $retval, $r ) {
+	global $anonymous_bbpress_users, $anonymous_bbpress_user_index;
 
-    remove_filter(current_filter(), 'anonymous_bbpress_set_random_name');
+	if ( empty( $anonymous_bbpress_users ) ) {
+		return $retval;
+	}
 
-    if (empty($name) && !empty($anonymous_bbpress_users)) {
-        $name = sanitize_text_field($anonymous_bbpress_users[$anonymous_bbpress_user_index][0]);
-    }
+	if (
+		isset( $r['bbp_anonymous_name'], $r['bbp_anonymous_email'] ) &&
+		$anonymous_bbpress_users[ $anonymous_bbpress_user_index ][0] === $r['bbp_anonymous_name'] &&
+		$anonymous_bbpress_users[ $anonymous_bbpress_user_index ][1] === $r['bbp_anonymous_email']
+	) {
+		$retval = array(); // reset post data
+		$retval['bbp_anonymous_flood_check'] = '1'; // trigger flood check
+	}
 
-    return $name;
-}
-
-/**
- * Set a random anonymous email if none provided.
- *
- * @param string $email Anonymous user email.
- * @return string Email.
- */
-function anonymous_bbpress_set_random_email($email) {
-    global $anonymous_bbpress_users, $anonymous_bbpress_user_index;
-
-    remove_filter(current_filter(), 'anonymous_bbpress_set_random_email');
-
-    if (empty($email) && !empty($anonymous_bbpress_users)) {
-        $email = sanitize_email($anonymous_bbpress_users[$anonymous_bbpress_user_index][1]);
-    }
-
-    return $email;
-}
-
-/**
- * Filter anonymous post data to prevent spam and flooding.
- *
- * @param array $retval Filtered data.
- * @param array $r Post data.
- * @return array Modified data.
- */
-function anonymous_bbpress_filter_anonymous_post_data($retval, $r) {
-    global $anonymous_bbpress_users, $anonymous_bbpress_user_index;
-
-    if (empty($anonymous_bbpress_users)) {
-        return $retval;
-    }
-
-    if (
-        $anonymous_bbpress_users[$anonymous_bbpress_user_index][0] === $r['bbp_anonymous_name'] &&
-        $anonymous_bbpress_users[$anonymous_bbpress_user_index][1] === $r['bbp_anonymous_email']
-    ) {
-        // Reset input to skip cookie writing
-        $retval = array();
-
-        // Activate flood check
-        $retval['bbp_anonymous_flood_check'] = '1';
-    }
-
-    return $retval;
+	return $retval;
 }
 
 // Ref: ChatGPT
